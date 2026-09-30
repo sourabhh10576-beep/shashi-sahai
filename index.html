@@ -815,8 +815,18 @@
 
         .lightbox img {
             max-height: 82vh;
-            max-width: 86vw;
+            max-height: calc(100svh - 120px);
+            max-width: 92vw;
             object-fit: contain;
+        }
+
+        .previewable {
+            cursor: zoom-in;
+        }
+
+        .previewable:focus-visible {
+            outline: 2px solid var(--rust);
+            outline-offset: 4px;
         }
 
         .lightbox-close {
@@ -1806,6 +1816,10 @@
             opacity: 1;
             transform: translateY(0);
             translate: 0 calc(var(--t, 0) * -14px);
+        }
+
+        .hero-scroll .scene.active {
+            pointer-events: auto;
         }
 
         .hero-scroll .scene.past .item {
@@ -2826,8 +2840,8 @@
     </footer>
 
     <div class="lightbox" role="dialog" aria-modal="true" aria-label="Expanded photograph">
-        <button class="lightbox-close">Close ×</button>
-        <img src="lens_transparent" alt="">
+        <button class="lightbox-close" type="button" aria-label="Close image preview">Close ×</button>
+        <img alt="">
         <div class="lightbox-caption"></div>
     </div>
 
@@ -2951,6 +2965,33 @@
         const lightbox = document.querySelector('.lightbox');
         const lightboxImage = lightbox.querySelector('img');
         const lightboxCaption = lightbox.querySelector('.lightbox-caption');
+        const lightboxClose = lightbox.querySelector('.lightbox-close');
+        let previewTrigger = null;
+
+        const openImagePreview = image => {
+            previewTrigger = image;
+            lightboxImage.src = image.currentSrc || image.src;
+            lightboxImage.alt = image.alt;
+            lightboxCaption.textContent = image.closest('figure')?.querySelector('figcaption')?.textContent.trim()
+                || image.closest('.tile')?.dataset.title
+                || image.alt;
+            lightbox.classList.add('open');
+            document.body.classList.add('locked');
+            lightboxClose.focus();
+        };
+
+        document.querySelectorAll('main img').forEach(image => {
+            image.classList.add('previewable');
+            image.tabIndex = 0;
+            image.setAttribute('role', 'button');
+            image.addEventListener('click', () => openImagePreview(image));
+            image.addEventListener('keydown', event => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    openImagePreview(image);
+                }
+            });
+        });
 
         menuButton.addEventListener('click', () => {
             const isOpen = nav.classList.toggle('open');
@@ -3032,20 +3073,14 @@
             tiles.forEach(tile => tile.classList.toggle('hidden', category !== 'all' && tile.dataset.category !== category));
         }));
 
-        tiles.forEach(tile => tile.addEventListener('click', () => {
-            lightboxImage.src = tile.querySelector('img').src;
-            lightboxImage.alt = tile.querySelector('img').alt;
-            lightboxCaption.textContent = tile.dataset.title;
-            lightbox.classList.add('open');
-            document.body.classList.add('locked');
-        }));
-
         const closeLightbox = () => {
             lightbox.classList.remove('open');
             document.body.classList.remove('locked');
+            if (previewTrigger?.isConnected) previewTrigger.focus();
+            previewTrigger = null;
         };
-        lightbox.addEventListener('click', event => { if (event.target === lightbox || event.target.classList.contains('lightbox-close')) closeLightbox(); });
-        document.addEventListener('keydown', event => { if (event.key === 'Escape') closeLightbox(); });
+        lightbox.addEventListener('click', event => { if (event.target === lightbox || event.target === lightboxClose) closeLightbox(); });
+        document.addEventListener('keydown', event => { if (event.key === 'Escape' && lightbox.classList.contains('open')) closeLightbox(); });
     </script>
 </body>
 
