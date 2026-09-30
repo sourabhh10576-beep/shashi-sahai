@@ -44,6 +44,96 @@
             overflow: hidden;
         }
 
+        body.is-loading {
+            overflow: hidden;
+        }
+
+        .site-loader {
+            align-items: center;
+            background: var(--paper);
+            display: flex;
+            inset: 0;
+            justify-content: center;
+            position: fixed;
+            transition: opacity .55s ease, visibility .55s ease;
+            visibility: visible;
+            z-index: 1000;
+        }
+
+        .site-loader.is-hidden {
+            opacity: 0;
+            pointer-events: none;
+            visibility: hidden;
+        }
+
+        .loader-content {
+            max-width: calc(100vw - 48px);
+            text-align: center;
+        }
+
+        .loader-title {
+            font-family: var(--serif);
+            font-size: clamp(1.5rem, 5vw, 2.25rem);
+            font-weight: 400;
+        }
+
+        .loader-title span {
+            color: var(--rust);
+        }
+
+        .loader-image {
+            display: block;
+            height: min(28vh, 220px);
+            margin: 18px auto 0;
+            max-width: min(62vw, 240px);
+            object-fit: contain;
+            width: 100%;
+        }
+
+        .loader-caption {
+            color: var(--muted);
+            display: block;
+            font-family: var(--mono);
+            font-size: .6rem;
+            letter-spacing: .14em;
+            margin-top: 12px;
+            text-transform: uppercase;
+        }
+
+        .loader-track {
+            background: var(--line);
+            height: 1px;
+            margin-top: 25px;
+            overflow: hidden;
+            width: min(220px, calc(100vw - 64px));
+        }
+
+        .loader-track::after {
+            animation: loader-progress 5.25s ease-in-out infinite;
+            background: var(--rust);
+            content: "";
+            display: block;
+            height: 100%;
+            transform: translateX(-100%);
+            width: 42%;
+        }
+
+        @keyframes loader-progress {
+            to { transform: translateX(340%); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .site-loader {
+                transition: none;
+            }
+
+            .loader-track::after {
+                animation: none;
+                transform: none;
+                width: 100%;
+            }
+        }
+
         a {
             color: inherit;
             text-decoration: none;
@@ -1787,6 +1877,9 @@
 
         .hero-scroll .s1 .t {
             justify-self: start;
+            text-shadow: 2px 2px white;
+
+
         }
 
         .hero-scroll .s3 {
@@ -1804,6 +1897,7 @@
             justify-self: end;
             line-height: 1.55;
             max-width: 26ch;
+             text-shadow: 2px 2px white;
         }
 
         .hero-scroll .s4 {
@@ -1827,6 +1921,8 @@
             justify-self: center;
             max-width: 46ch;
             text-align: center;
+             text-shadow: 2px 2px black;
+             font-weight:bold;
         }
 
         .hero-scroll .s5 {
@@ -1849,6 +1945,7 @@
             justify-self: center;
             max-width: 62ch;
             text-align: center;
+             text-shadow: 2px 2px white;
         }
 
         .hero-scroll .s6 {
@@ -1864,6 +1961,7 @@
         .hero-scroll .s6 .t {
             justify-self: start;
             max-width: 40ch;
+             text-shadow: 2px 2px white;
         }
 
         .hero-scroll .s7 {
@@ -1879,6 +1977,9 @@
         .hero-scroll .s7 .t {
             justify-self: start;
             max-width: 32ch;
+            text-shadow: 2px 2px white;
+            font-weight:bold;
+
         }
 
         /* ----- dots + hint ----- */
@@ -2289,7 +2390,16 @@
     </style>
 </head>
 
-<body>
+<body class="is-loading">
+    <div class="site-loader" role="status" aria-live="polite" aria-label="Loading the archive">
+        <div class="loader-content">
+            <div class="loader-title">Shashi Sahai <span>—</span> </div>
+            <img class="loader-image" src="camera_transparent.png" alt="" aria-hidden="true" fetchpriority="high">
+            <span class="loader-caption">Preparing the collection</span>
+            <div class="loader-track" aria-hidden="true"></div>
+        </div>
+    </div>
+
     <header class="topbar">
         <a class="wordmark" href="#top">Shashi Sahai <span>—</span> Archive</a>
         <button class="menu-button" type="button" aria-label="Toggle navigation" aria-controls="main-navigation"
@@ -2322,8 +2432,7 @@
                 </div>
 
                 <div class="scene s3">
-                    <div class="item t txt"><b>For Shashi, photography was less about the camera and more about paying
-                            attention to the life unfolding in front of him.</b></div>
+                    <div class="item t txt"><b>For over 35 years, his lens traversed heritage streets, quiet misty landscapes, timeless cultural celebrations and intimate human moments across five continents.</b></div>
                     <div class="item a">
                         <img class="ph" src="ribbon.jpg" alt="Shashi Sahai at work with his camera" decoding="async">
                     </div>
@@ -2629,13 +2738,18 @@
                             <figcaption>From the archive</figcaption>
                         </figure>
 
-                        <!-- <figure class="carousel-slide">
-                        <img src="monument.jpg" alt="monuments" loading="lazy">
+                        <figure class="carousel-slide">
+                        <img src="bosepukur 1 088.jpg" alt="monuments" loading="lazy">
                         <figcaption>From the archive</figcaption>
-                    </figure> -->
+                    </figure>
 
                         <figure class="carousel-slide">
-                            <img src="shashiwithchildren.jpg" alt="shashiwithchildren" loading="lazy">
+                        <img src="PANGUAT 234.jpg" alt="monuments" loading="lazy">
+                        <figcaption>From the archive</figcaption>
+                    </figure>
+
+                        <figure class="carousel-slide">
+                            <img src="bosepukur 1 055.jpg" alt="shashiwithchildren" loading="lazy">
                             <figcaption>From the archive</figcaption>
                         </figure>
                     </div>
@@ -2667,7 +2781,7 @@
                     I could put down the burdens I carried. We did not spend our years defining the relationship; we
                     spent them living it.</p>
                 <!-- <a href="mailto:archive@eliashart.org" class="eyebrow">archive@eliashart.org</a> -->
-                <a><button backgound="black">read more!</button></a>
+                <!-- <a><button backgound="black">read more!</button></a> -->
             </div>
         </section>
     </main>
@@ -2705,18 +2819,40 @@
         </div>
 
         <div class="sf-bottom">
-            <span>In memory of Shashi Sahai</span>
-            <span>1996 &mdash; 2026</span>
+                <span>In memory of Shashi Sahai</span>
+                <span>1996 &mdash; 2026</span>
+            
         </div>
     </footer>
 
     <div class="lightbox" role="dialog" aria-modal="true" aria-label="Expanded photograph">
         <button class="lightbox-close">Close ×</button>
-        <img src="" alt="">
+        <img src="lens_transparent" alt="">
         <div class="lightbox-caption"></div>
     </div>
 
     <script>
+        const siteLoader = document.querySelector('.site-loader');
+        const loaderImage = siteLoader.querySelector('.loader-image');
+        loaderImage.addEventListener('error', () => loaderImage.remove(), { once: true });
+        const loaderStartedAt = performance.now();
+        let loaderDismissed = false;
+        const dismissSiteLoader = () => {
+            if (loaderDismissed) return;
+            loaderDismissed = true;
+            const minimumDisplay = 500;
+            const wait = Math.max(0, minimumDisplay - (performance.now() - loaderStartedAt));
+            setTimeout(() => {
+                siteLoader.classList.add('is-hidden');
+                document.body.classList.remove('is-loading');
+                siteLoader.addEventListener('transitionend', () => siteLoader.remove(), { once: true });
+                setTimeout(() => siteLoader.remove(), 700);
+            }, wait);
+        };
+        window.addEventListener('load', dismissSiteLoader, { once: true });
+        setTimeout(dismissSiteLoader, 8000);
+        if (document.readyState === 'complete') dismissSiteLoader();
+
         /* keep --header-height equal to the real sticky header height (desktop + mobile) */
         const topbarEl = document.querySelector('.topbar');
         const syncHeaderHeight = () => {
